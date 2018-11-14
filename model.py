@@ -230,7 +230,7 @@ class VOModel(object):
             output = input
 
             for index, [ksize, stride, channels] in enumerate(zip(ksizes, strides, n_channels)):
-                inner_scope_name = flownet_layer_names[index] if self.use_flownet else f'conv{index}'
+                inner_scope_name = flownet_layer_names[index] if self.use_flownet else 'conv{index}'.format(index) #FIXME f
                 with tf.variable_scope(inner_scope_name):
                     # no relu for last layer
                     activation = tf.nn.relu if index < len(ksizes) - 1 else None

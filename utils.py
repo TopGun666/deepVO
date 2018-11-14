@@ -8,7 +8,8 @@ the data into batches.
 .. moduleauthor Rasmus Diederichsen, Alexander Mock
 '''
 import numpy as np
-
+import tensorflow as tf
+from math import ceil
 
 def tensor_from_lstm_tuple(tuples, validate_shape=False):
     '''Create a tensor from a tuple of :py:class:`tf.contrib.rnn.LSTMStateTuple` s.
@@ -139,15 +140,16 @@ def resize_to_multiple(images, multiples):
     tf.Operation
         Tensorflow op for resizing images
     '''
-    from tensorflow.image import resize_images
+
+    # from tensorflow.image import resize_images
     _, h, w, _ = images.get_shape()
     # if only one multiple, assume it's the value to use for all dims
     if not isinstance(multiples, tuple):
         multiples = (multiples, multiples)
     new_h, new_w = [int(ceil(input_shape[0] / multiples[0])),
                     int(ceil(input_shape[1] / multiples[1]))]
-    return resize_images(images, [new_h, new_w])
-
+    # return resize_images()
+    return tf.image.resize_images(images, [new_h, new_w])
 
 def image_pairs(image_sequence, sequence_length):
     '''Generate sequences of stacked pairs of images where two 3-channel images are merged to on
@@ -336,7 +338,7 @@ class OptimizerSpec(dict):
 
     def __str__(self):
         key_val_str = ', '.join(str(k) + '=' + str(v) for k, v in self.items())
-        return f'<Optimizer: {key_val_str}>'
+        return '<Optimizer: {key_val_str}>'.format(key_val_str) #FIXME f
 
     @staticmethod
     def get_optimizer(name):

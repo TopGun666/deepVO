@@ -94,7 +94,7 @@ def main():
 
         if args.load_checkpoint:
 
-            print(f'Loading {model_filename}')
+            print('Loading {model_filename}'.format(model_filename)) #FIXME f
             try:
                 saver.restore(session, model_filename)
                 print('Success.')
@@ -105,7 +105,7 @@ def main():
         best_loss = None
         losses = []
         for e in range(args.epochs):
-            print(f'Epoch {e+1} of {args.epochs}')
+            print('Epoch {e+1} of {args.epochs}'.format('e+1', 'args.epochs')) #FIXME f
             # reset state after each batch of consecutive sequences
             states = None
             for images, poses in data_manager.batches():
@@ -128,9 +128,9 @@ def main():
                 if not os.path.exists(checkpoint_dir):
                     os.mkdir(checkpoint_dir)
                 save_path = saver.save(session, model_filename)
-                print(f'Model saved in file: {model_filename}')
+                # print(f'Model saved in file: {model_filename}')
 
-            print(f'Average test loss across {count} batches: {avg_loss:04.5f}')
+            print('Average test loss across {count} batches: {avg_loss:04.5f}'.format(count, avg_loss)) #FIXME f
 
             data_manager.shuffleBatches()
 

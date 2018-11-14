@@ -53,7 +53,7 @@ def show_imgs(data_manager):
     for idx in range(N):
         img = data_manager.loadImage(idx)
         minimum, maximum = img.min(), img.max()
-        print(f'Range: ({minimum}, {maximum})')
+        # print(f'Range: ({minimum}, {maximum})')
         plt.imshow((img - minimum) / (maximum - minimum))
         plt.show()
 
@@ -61,12 +61,12 @@ def show_imgs(data_manager):
 def to_float(data_manager):
     '''Convert dataset to range (0, 1)'''
     N = len(data_manager)
-    print(f'Converting {data_manager.dataset_path}images/*.npy fo float ...')
+    # print(f'Converting {data_manager.dataset_path}images/*.npy fo float ...')
     for idx in range(N):
 
         # print progress
-        if idx % 10 == 0:
-            print(f'\r{idx+1:4d}/{N}', end='')
+        # if idx % 10 == 0:
+        #     print(f'\r{idx+1:4d}/{N}', end='')
 
         img = data_manager.loadImage(idx) / 255.
         data_manager.saveImage(idx, img.astype(np.float32))
@@ -77,7 +77,7 @@ def mean_normalize(data_manager):
     '''Normalize data to the range -1 to 1'''
     assert data_manager.dtype == np.float32
     N = len(data_manager)
-    print(f'Mean-normalizing {data_manager.dataset_path}/images/*.npy ...')
+    # print(f'Mean-normalizing {data_manager.dataset_path}/images/*.npy ...')
     mean_accumlator = np.zeros((3,), dtype=np.float32)
 
     # run over entire dataset to compute mean (fucking inefficient but I have other shit to do)
@@ -86,11 +86,11 @@ def mean_normalize(data_manager):
         mean_accumlator += compute_rgb_mean(img)
 
     mean_accumlator /= N
-    print(f'Mean: {mean_accumlator}')
+    # print(f'Mean: {mean_accumlator}')
     for idx in range(N):
 
-        if idx % 10 == 0:
-            print(f'\r{idx+1:4d}/{N}', end='')
+        # if idx % 10 == 0:
+        #     print(f'\r{idx+1:4d}/{N}', end='')
 
         img = data_manager.loadImage(idx)
         data_manager.saveImage(idx, (img - mean_accumlator))
